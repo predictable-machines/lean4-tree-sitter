@@ -1,0 +1,6 @@
+import PredictableTreeSitter.FFI.Index
+import PredictableTreeSitter.Types.Index
+import PredictableTreeSitter.Grammars.Index
+import PredictableTreeSitter.Extract.Index
+import PredictableTreeSitter.SourceMap.Index
+import PredictableTreeSitter.Proofs.Index

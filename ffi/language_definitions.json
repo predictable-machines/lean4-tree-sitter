@@ -1,0 +1,22 @@
+{
+  "tree-sitter-core": {
+    "repo": "https://github.com/tree-sitter/tree-sitter",
+    "rev": "v0.24.7",
+    "paths": ["lib/include", "lib/src"]
+  },
+  "java": {
+    "repo": "https://github.com/tree-sitter/tree-sitter-java",
+    "rev": "e10607b45ff745f5f876bfa3e94fbcc6b44bdc11",
+    "has_scanner": false
+  },
+  "python": {
+    "repo": "https://github.com/tree-sitter/tree-sitter-python",
+    "rev": "bffb65a8cfe4e46290331dfef0dbf0ef3679de11",
+    "has_scanner": true
+  },
+  "kotlin": {
+    "repo": "https://github.com/fwcd/tree-sitter-kotlin",
+    "rev": "57fb4560ba8641865bc0baa6b3f413b236112c4c",
+    "has_scanner": true
+  }
+}
