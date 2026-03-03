@@ -14,6 +14,7 @@ jobs:
       - uses: leanprover/lean-action@v1
         with:
           build: true
+      - name: Build tests
+        run: lake build tree_sitter_test_runner
       - name: Run tests
-        run: |
-          .lake/build/bin/tree_sitter_test_runner
+        run: .lake/build/bin/tree_sitter_test_runner
