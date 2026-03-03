@@ -1,10 +1,10 @@
-import PredictableTreeSitter.Types.Index
-import PredictableTreeSitter.Grammars.Index
+import TreeSitter.Types.Index
+import TreeSitter.Grammars.Index
 
-namespace Test.TreeSitter.GrammarSpec
+namespace Test.TS.GrammarSpec
 
-open PredictableTreeSitter
-open PredictableTreeSitter.Grammars
+open TreeSitter
+open TreeSitter.Grammars
 
 private def strContains (haystack needle : String) : Bool :=
   needle.length ≤ haystack.length &&
@@ -86,4 +86,4 @@ def runAllTests : IO Unit := do
   IO.println ""
   IO.println "All GrammarSpec tests passed! (3 runtime + 15 compile-time)"
 
-end Test.TreeSitter.GrammarSpec
+end Test.TS.GrammarSpec

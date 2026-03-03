@@ -1,1 +1,1 @@
-import PredictableTreeSitter.Extract.Extract
+import TreeSitter.Extract.Extract

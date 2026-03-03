@@ -1,8 +1,8 @@
-import PredictableTreeSitter.SourceMap.Types
+import TreeSitter.SourceMap.Types
 
-namespace PredictableTreeSitter.SourceMap
+namespace TreeSitter.SourceMap
 
-open PredictableTreeSitter
+open TreeSitter
 
 def SourceMap.lookupByLean (sm : SourceMap) (loc : LeanLocation) : Option SourceMapping :=
   sm.entries.find? fun m => m.lean == loc
@@ -32,4 +32,4 @@ def SourceMap.traceError (sm : SourceMap) (leanLine : Nat) : Option SourceRange 
 def SourceMap.filterByType (sm : SourceMap) (dt : DeclarationType) : Array SourceMapping :=
   sm.entries.filter fun m => m.declType == dt
 
-end PredictableTreeSitter.SourceMap
+end TreeSitter.SourceMap

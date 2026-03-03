@@ -1,8 +1,8 @@
-import PredictableTreeSitter.FFI.Index
+import TreeSitter.FFI.Index
 
-namespace Test.TreeSitter.FFI
+namespace Test.TS.FFI
 
-open PredictableTreeSitter.FFI
+open TreeSitter.FFI
 
 private def strContains (haystack needle : String) : Bool :=
   needle.length ≤ haystack.length &&
@@ -219,4 +219,4 @@ def runAllTests : IO Unit := do
   IO.println ""
   IO.println "All FFI tests passed! (10 tests)"
 
-end Test.TreeSitter.FFI
+end Test.TS.FFI

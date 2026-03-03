@@ -1,1 +1,1 @@
-import PredictableTreeSitter.Index
+import TreeSitter.Index

@@ -1,9 +1,9 @@
-import PredictableTreeSitter.SourceMap.Index
+import TreeSitter.SourceMap.Index
 
-namespace PredictableTreeSitter.Proofs
+namespace TreeSitter.Proofs
 
-open PredictableTreeSitter
-open PredictableTreeSitter.SourceMap
+open TreeSitter
+open TreeSitter.SourceMap
 
 -- Construction properties
 
@@ -83,4 +83,4 @@ theorem compose_empty (sf1 lm1 sf2 lm2 : String) :
     (SourceMap.empty sf1 lm1).compose (SourceMap.empty sf2 lm2) =
     { entries := #[], sourceFile := sf1, leanModule := lm2 } := rfl
 
-end PredictableTreeSitter.Proofs
+end TreeSitter.Proofs

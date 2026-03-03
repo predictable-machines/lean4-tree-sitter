@@ -1,6 +1,6 @@
-import PredictableTreeSitter.FFI.Index
-import PredictableTreeSitter.Types.Index
-import PredictableTreeSitter.Grammars.Index
-import PredictableTreeSitter.Extract.Index
-import PredictableTreeSitter.SourceMap.Index
-import PredictableTreeSitter.Proofs.Index
+import TreeSitter.FFI.Index
+import TreeSitter.Types.Index
+import TreeSitter.Grammars.Index
+import TreeSitter.Extract.Index
+import TreeSitter.SourceMap.Index
+import TreeSitter.Proofs.Index

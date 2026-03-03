@@ -1,6 +1,6 @@
-import PredictableTreeSitter.Types.GrammarSpec
+import TreeSitter.Types.GrammarSpec
 
-namespace PredictableTreeSitter.Grammars
+namespace TreeSitter.Grammars
 
 inductive KotlinNode where
   | class_declaration
@@ -47,4 +47,4 @@ instance : GrammarSpec KotlinNode where
 
   decl_nodes_total := by decide
 
-end PredictableTreeSitter.Grammars
+end TreeSitter.Grammars

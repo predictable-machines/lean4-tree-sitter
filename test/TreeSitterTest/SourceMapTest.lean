@@ -1,11 +1,11 @@
-import PredictableTreeSitter.SourceMap.Index
-import PredictableTreeSitter.Extract.Index
+import TreeSitter.SourceMap.Index
+import TreeSitter.Extract.Index
 
-namespace Test.TreeSitter.SourceMap
+namespace Test.TS.SourceMap
 
-open PredictableTreeSitter
-open PredictableTreeSitter.SourceMap
-open PredictableTreeSitter.Extract
+open TreeSitter
+open TreeSitter.SourceMap
+open TreeSitter.Extract
 
 private def javaSource : String :=
   "public class UserService {\n" ++
@@ -157,4 +157,4 @@ def runAllTests : IO Unit := do
   IO.println ""
   IO.println "All Source Map tests passed! (7 tests)"
 
-end Test.TreeSitter.SourceMap
+end Test.TS.SourceMap

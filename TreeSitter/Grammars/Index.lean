@@ -1,3 +1,3 @@
-import PredictableTreeSitter.Grammars.Java
-import PredictableTreeSitter.Grammars.Python
-import PredictableTreeSitter.Grammars.Kotlin
+import TreeSitter.Grammars.Java
+import TreeSitter.Grammars.Python
+import TreeSitter.Grammars.Kotlin

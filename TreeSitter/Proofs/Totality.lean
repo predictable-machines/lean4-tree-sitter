@@ -1,10 +1,10 @@
-import PredictableTreeSitter.Types.GrammarSpec
-import PredictableTreeSitter.Grammars.Index
+import TreeSitter.Types.GrammarSpec
+import TreeSitter.Grammars.Index
 
-namespace PredictableTreeSitter.Proofs
+namespace TreeSitter.Proofs
 
-open PredictableTreeSitter
-open PredictableTreeSitter.Grammars
+open TreeSitter
+open TreeSitter.Grammars
 
 -- Re-exported totality proofs: every declared node maps to Some DeclarationType.
 -- These are enforced at the typeclass level by GrammarSpec.decl_nodes_total;
@@ -50,4 +50,4 @@ theorem python_identifier_not_decl : GrammarSpec.toDeclarationType PythonNode.id
 theorem kotlin_identifier_not_decl : GrammarSpec.toDeclarationType KotlinNode.identifier = none := rfl
 theorem kotlin_simple_identifier_not_decl : GrammarSpec.toDeclarationType KotlinNode.simple_identifier = none := rfl
 
-end PredictableTreeSitter.Proofs
+end TreeSitter.Proofs

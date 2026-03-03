@@ -1,6 +1,6 @@
-import PredictableTreeSitter.Types.CodeLocation
+import TreeSitter.Types.CodeLocation
 
-namespace PredictableTreeSitter
+namespace TreeSitter
 
 inductive DeclarationType where
   | class_
@@ -27,4 +27,4 @@ structure Declaration where
   modifiers : Array String := #[]
   deriving Repr, Inhabited
 
-end PredictableTreeSitter
+end TreeSitter

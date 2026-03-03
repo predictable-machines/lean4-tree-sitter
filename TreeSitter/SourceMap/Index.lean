@@ -1,3 +1,3 @@
-import PredictableTreeSitter.SourceMap.Types
-import PredictableTreeSitter.SourceMap.Lookup
-import PredictableTreeSitter.SourceMap.Compose
+import TreeSitter.SourceMap.Types
+import TreeSitter.SourceMap.Lookup
+import TreeSitter.SourceMap.Compose

@@ -1,16 +1,16 @@
-import PredictableTreeSitterTest.Index
+import TreeSitterTest.Index
 
 unsafe def main : IO Unit := do
-  Test.TreeSitter.FFI.runAllTests
+  Test.TS.FFI.runAllTests
   IO.println ""
   IO.println "=================================================="
   IO.println ""
-  Test.TreeSitter.GrammarSpec.runAllTests
+  Test.TS.GrammarSpec.runAllTests
   IO.println ""
   IO.println "=================================================="
   IO.println ""
-  Test.TreeSitter.Extract.runAllTests
+  Test.TS.Extract.runAllTests
   IO.println ""
   IO.println "=================================================="
   IO.println ""
-  Test.TreeSitter.SourceMap.runAllTests
+  Test.TS.SourceMap.runAllTests

@@ -1,6 +1,6 @@
-import PredictableTreeSitter.FFI.Types
+import TreeSitter.FFI.Types
 
-namespace PredictableTreeSitter.FFI
+namespace TreeSitter.FFI
 
 @[extern "lean_ts_query_new"]
 opaque TSQuery.new (lang : @& TSLanguage) (source : @& String) : IO TSQuery
@@ -26,4 +26,4 @@ opaque TSQueryCursor.nextMatch (cursor : @& TSQueryCursor) : IO (Option (UInt32 
 @[extern "lean_ts_query_capture_name"]
 opaque TSQuery.captureName (query : @& TSQuery) (index : UInt32) : IO String
 
-end PredictableTreeSitter.FFI
+end TreeSitter.FFI

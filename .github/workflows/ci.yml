@@ -1,0 +1,19 @@
+name: CI
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Vendor tree-sitter grammars
+        run: cd ffi && bash vendor_grammars.sh
+      - uses: leanprover/lean-action@v1
+        with:
+          build: true
+      - name: Run tests
+        run: |
+          .lake/build/bin/tree_sitter_test_runner

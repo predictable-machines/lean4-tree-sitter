@@ -1,10 +1,10 @@
-import PredictableTreeSitter.FFI.Index
-import PredictableTreeSitter.Types.Index
+import TreeSitter.FFI.Index
+import TreeSitter.Types.Index
 
-namespace PredictableTreeSitter.Extract
+namespace TreeSitter.Extract
 
-open PredictableTreeSitter.FFI
-open PredictableTreeSitter
+open TreeSitter.FFI
+open TreeSitter
 
 private def extractSubstr (source : String) (startByte endByte : UInt32) : Substring.Raw :=
   { str := source, startPos := ⟨startByte.toNat⟩, stopPos := ⟨endByte.toNat⟩ }
@@ -178,4 +178,4 @@ def extractPython (source : String) : IO (Array Declaration) :=
 def extractKotlin (source : String) : IO (Array Declaration) :=
   extractDeclarations treeSitterKotlin kotlinNodeMapping source
 
-end PredictableTreeSitter.Extract
+end TreeSitter.Extract

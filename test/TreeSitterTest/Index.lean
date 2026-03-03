@@ -1,4 +1,4 @@
-import PredictableTreeSitterTest.FFITest
-import PredictableTreeSitterTest.GrammarSpecTest
-import PredictableTreeSitterTest.ExtractTest
-import PredictableTreeSitterTest.SourceMapTest
+import TreeSitterTest.FFITest
+import TreeSitterTest.GrammarSpecTest
+import TreeSitterTest.ExtractTest
+import TreeSitterTest.SourceMapTest

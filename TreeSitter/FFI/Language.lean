@@ -1,6 +1,6 @@
-import PredictableTreeSitter.FFI.Types
+import TreeSitter.FFI.Types
 
-namespace PredictableTreeSitter.FFI
+namespace TreeSitter.FFI
 
 @[extern "lean_tree_sitter_java"]
 opaque treeSitterJava : IO TSLanguage
@@ -11,4 +11,4 @@ opaque treeSitterPython : IO TSLanguage
 @[extern "lean_tree_sitter_kotlin"]
 opaque treeSitterKotlin : IO TSLanguage
 
-end PredictableTreeSitter.FFI
+end TreeSitter.FFI

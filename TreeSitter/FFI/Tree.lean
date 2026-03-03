@@ -1,8 +1,8 @@
-import PredictableTreeSitter.FFI.Types
+import TreeSitter.FFI.Types
 
-namespace PredictableTreeSitter.FFI
+namespace TreeSitter.FFI
 
 @[extern "lean_ts_tree_root_node"]
 opaque TSTree.rootNode (tree : @& TSTree) : IO TSNode
 
-end PredictableTreeSitter.FFI
+end TreeSitter.FFI

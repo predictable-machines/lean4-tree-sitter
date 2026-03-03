@@ -1,9 +1,9 @@
-import PredictableTreeSitter.Extract.Index
+import TreeSitter.Extract.Index
 
-namespace Test.TreeSitter.Extract
+namespace Test.TS.Extract
 
-open PredictableTreeSitter
-open PredictableTreeSitter.Extract
+open TreeSitter
+open TreeSitter.Extract
 
 private def javaSource : String :=
   "public class UserService {\n" ++
@@ -164,4 +164,4 @@ def runAllTests : IO Unit := do
   IO.println ""
   IO.println "All Extraction tests passed! (7 tests)"
 
-end Test.TreeSitter.Extract
+end Test.TS.Extract

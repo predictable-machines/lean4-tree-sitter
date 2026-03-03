@@ -1,8 +1,8 @@
-import PredictableTreeSitter.Types.Index
+import TreeSitter.Types.Index
 
-namespace PredictableTreeSitter.SourceMap
+namespace TreeSitter.SourceMap
 
-open PredictableTreeSitter
+open TreeSitter
 
 structure LeanLocation where
   module : String
@@ -52,4 +52,4 @@ def SourceMap.fromDeclarations
     (acc.push mapping ++ childMappings.1, childMappings.2 + 1)
   { entries, sourceFile, leanModule }
 
-end PredictableTreeSitter.SourceMap
+end TreeSitter.SourceMap

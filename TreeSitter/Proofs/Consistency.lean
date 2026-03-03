@@ -1,10 +1,10 @@
-import PredictableTreeSitter.Types.GrammarSpec
-import PredictableTreeSitter.Grammars.Index
+import TreeSitter.Types.GrammarSpec
+import TreeSitter.Grammars.Index
 
-namespace PredictableTreeSitter.Proofs
+namespace TreeSitter.Proofs
 
-open PredictableTreeSitter
-open PredictableTreeSitter.Grammars
+open TreeSitter
+open TreeSitter.Grammars
 
 -- Cross-language consistency: the same semantic concept maps to the same
 -- DeclarationType across all three languages.
@@ -52,4 +52,4 @@ theorem python_decorated_is_function :
     GrammarSpec.toDeclarationType PythonNode.decorated_definition =
     GrammarSpec.toDeclarationType PythonNode.function_definition := rfl
 
-end PredictableTreeSitter.Proofs
+end TreeSitter.Proofs

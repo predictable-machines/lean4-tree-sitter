@@ -1,3 +1,3 @@
-import PredictableTreeSitter.Proofs.Totality
-import PredictableTreeSitter.Proofs.Consistency
-import PredictableTreeSitter.Proofs.SourceMap
+import TreeSitter.Proofs.Totality
+import TreeSitter.Proofs.Consistency
+import TreeSitter.Proofs.SourceMap

@@ -1,6 +1,6 @@
-import PredictableTreeSitter.FFI.Types
+import TreeSitter.FFI.Types
 
-namespace PredictableTreeSitter.FFI
+namespace TreeSitter.FFI
 
 @[extern "lean_ts_node_type"]
 opaque TSNode.type (node : @& TSNode) : IO String
@@ -47,4 +47,4 @@ opaque TSNode.isNamed (node : @& TSNode) : IO Bool
 @[extern "lean_ts_node_child_by_field_name"]
 opaque TSNode.childByFieldName (node : @& TSNode) (fieldName : @& String) : IO TSNode
 
-end PredictableTreeSitter.FFI
+end TreeSitter.FFI

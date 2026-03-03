@@ -1,6 +1,6 @@
-import PredictableTreeSitter.Types.GrammarSpec
+import TreeSitter.Types.GrammarSpec
 
-namespace PredictableTreeSitter.Grammars
+namespace TreeSitter.Grammars
 
 inductive JavaNode where
   | class_declaration
@@ -50,4 +50,4 @@ instance : GrammarSpec JavaNode where
 
   decl_nodes_total := by decide
 
-end PredictableTreeSitter.Grammars
+end TreeSitter.Grammars

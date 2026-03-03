@@ -1,3 +1,3 @@
-import PredictableTreeSitter.Types.CodeLocation
-import PredictableTreeSitter.Types.Declaration
-import PredictableTreeSitter.Types.GrammarSpec
+import TreeSitter.Types.CodeLocation
+import TreeSitter.Types.Declaration
+import TreeSitter.Types.GrammarSpec

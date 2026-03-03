@@ -1,6 +1,6 @@
-import PredictableTreeSitter.Types.GrammarSpec
+import TreeSitter.Types.GrammarSpec
 
-namespace PredictableTreeSitter.Grammars
+namespace TreeSitter.Grammars
 
 inductive PythonNode where
   | function_definition
@@ -36,4 +36,4 @@ instance : GrammarSpec PythonNode where
 
   decl_nodes_total := by decide
 
-end PredictableTreeSitter.Grammars
+end TreeSitter.Grammars

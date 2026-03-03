@@ -1,4 +1,4 @@
-namespace PredictableTreeSitter
+namespace TreeSitter
 
 structure SourceRange where
   startLine   : Nat
@@ -7,4 +7,4 @@ structure SourceRange where
   endColumn   : Nat
   deriving Repr, BEq, Inhabited
 
-end PredictableTreeSitter
+end TreeSitter

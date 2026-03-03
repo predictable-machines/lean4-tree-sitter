@@ -1,4 +1,4 @@
-namespace PredictableTreeSitter.FFI
+namespace TreeSitter.FFI
 
 opaque TSParserPointed : NonemptyType
 def TSParser := TSParserPointed.type
@@ -24,4 +24,4 @@ opaque TSQueryCursorPointed : NonemptyType
 def TSQueryCursor := TSQueryCursorPointed.type
 instance : Nonempty TSQueryCursor := TSQueryCursorPointed.property
 
-end PredictableTreeSitter.FFI
+end TreeSitter.FFI

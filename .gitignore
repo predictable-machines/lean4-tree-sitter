@@ -1,0 +1,9 @@
+.lake/
+build/
+lake-packages/
+
+# Vendored tree-sitter C sources (regenerate with: make vendor-grammars)
+ffi/tree-sitter/lib/
+ffi/parsers/java/
+ffi/parsers/python/
+ffi/parsers/kotlin/

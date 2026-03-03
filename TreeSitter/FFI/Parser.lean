@@ -1,6 +1,6 @@
-import PredictableTreeSitter.FFI.Types
+import TreeSitter.FFI.Types
 
-namespace PredictableTreeSitter.FFI
+namespace TreeSitter.FFI
 
 @[extern "lean_ts_parser_new"]
 opaque TSParser.new : IO TSParser
@@ -11,4 +11,4 @@ opaque TSParser.setLanguage (parser : @& TSParser) (lang : @& TSLanguage) : IO B
 @[extern "lean_ts_parser_parse_string"]
 opaque TSParser.parseString (parser : @& TSParser) (source : @& String) : IO TSTree
 
-end PredictableTreeSitter.FFI
+end TreeSitter.FFI

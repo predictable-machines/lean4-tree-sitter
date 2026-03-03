@@ -1,6 +1,6 @@
-import PredictableTreeSitter.SourceMap.Lookup
+import TreeSitter.SourceMap.Lookup
 
-namespace PredictableTreeSitter.SourceMap
+namespace TreeSitter.SourceMap
 
 /-- Compose two source maps to create a transitive mapping.
     sm1: source → intermediate, sm2: intermediate → lean
@@ -17,4 +17,4 @@ def SourceMap.compose (sm1 sm2 : SourceMap) : SourceMap :=
     | none => none
   { entries, sourceFile := sm1.sourceFile, leanModule := sm2.leanModule }
 
-end PredictableTreeSitter.SourceMap
+end TreeSitter.SourceMap

@@ -1,6 +1,6 @@
-import PredictableTreeSitter.Types.Declaration
+import TreeSitter.Types.Declaration
 
-namespace PredictableTreeSitter
+namespace TreeSitter
 
 class GrammarSpec (Node : Type) where
   toDeclarationType : Node → Option DeclarationType
@@ -9,4 +9,4 @@ class GrammarSpec (Node : Type) where
   queryString       : String
   decl_nodes_total  : ∀ n, n ∈ declarationNodes → (toDeclarationType n).isSome = true
 
-end PredictableTreeSitter
+end TreeSitter
