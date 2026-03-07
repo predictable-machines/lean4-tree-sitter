@@ -1,3 +1,5 @@
+import Lean.Data.Json
+
 namespace TreeSitter
 
 structure SourceRange where
@@ -5,6 +7,6 @@ structure SourceRange where
   startColumn : Nat
   endLine     : Nat
   endColumn   : Nat
-  deriving Repr, BEq, Inhabited
+  deriving Repr, BEq, Inhabited, Lean.ToJson, Lean.FromJson
 
 end TreeSitter

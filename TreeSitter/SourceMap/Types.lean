@@ -1,27 +1,29 @@
 import TreeSitter.Types.Index
+import Lean.Data.Json
 
 namespace TreeSitter.SourceMap
 
 open TreeSitter
+open Lean (ToJson FromJson)
 
 structure LeanLocation where
   module : String
   line   : Nat
   column : Nat
-  deriving Repr, BEq, Inhabited
+  deriving Repr, BEq, Inhabited, ToJson, FromJson
 
 structure SourceMapping where
   source   : SourceRange
   lean     : LeanLocation
   declName : String
   declType : DeclarationType
-  deriving Repr, Inhabited
+  deriving Repr, Inhabited, ToJson, FromJson
 
 structure SourceMap where
   entries    : Array SourceMapping
   sourceFile : String
   leanModule : String
-  deriving Repr, Inhabited
+  deriving Repr, Inhabited, ToJson, FromJson
 
 def SourceMap.empty (sourceFile leanModule : String) : SourceMap :=
   { entries := #[], sourceFile, leanModule }
