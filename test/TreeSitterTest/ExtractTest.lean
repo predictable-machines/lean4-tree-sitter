@@ -151,17 +151,149 @@ def testPythonMethodNames : IO Unit := do
     throw (IO.userError s!"testPythonMethodNames: FAIL - add not found, got {calcMethods}")
   IO.println s!"  testPythonMethodNames: PASS (Calculator methods: {calcMethods})"
 
+private def typescriptSource : String :=
+  "export class UserService {\n" ++
+  "    private name: string;\n" ++
+  "\n" ++
+  "    constructor(name: string) {\n" ++
+  "        this.name = name;\n" ++
+  "    }\n" ++
+  "\n" ++
+  "    getName(): string {\n" ++
+  "        return this.name;\n" ++
+  "    }\n" ++
+  "}\n" ++
+  "\n" ++
+  "interface Serializable {\n" ++
+  "    serialize(): string;\n" ++
+  "}\n" ++
+  "\n" ++
+  "enum Color {\n" ++
+  "    Red,\n" ++
+  "    Green,\n" ++
+  "    Blue\n" ++
+  "}\n" ++
+  "\n" ++
+  "type StringOrNumber = string | number;\n" ++
+  "\n" ++
+  "function helper(x: number): number {\n" ++
+  "    return x + 1;\n" ++
+  "}\n"
+
+private def tsxSource : String :=
+  "interface Props {\n" ++
+  "    name: string;\n" ++
+  "}\n" ++
+  "\n" ++
+  "function Greeting(props: Props): JSX.Element {\n" ++
+  "    return <div>Hello, {props.name}!</div>;\n" ++
+  "}\n" ++
+  "\n" ++
+  "export class App {\n" ++
+  "    render() {\n" ++
+  "        return <Greeting name=\"World\" />;\n" ++
+  "    }\n" ++
+  "}\n"
+
+def testExtractTypescript : IO Unit := do
+  let decls ← extractTypescript typescriptSource
+  if decls.size == 0 then
+    throw (IO.userError "testExtractTypescript: FAIL - no declarations found")
+  let mut foundClass := false
+  let mut foundInterface := false
+  let mut foundEnum := false
+  let mut foundTypeAlias := false
+  let mut foundFunction := false
+  for d in decls do
+    if d.name == "UserService" && d.declType == .class_ then foundClass := true
+    if d.name == "Serializable" && d.declType == .interface_ then foundInterface := true
+    if d.name == "Color" && d.declType == .enum_ then foundEnum := true
+    if d.name == "StringOrNumber" && d.declType == .typeAlias then foundTypeAlias := true
+    if d.name == "helper" && d.declType == .function_ then foundFunction := true
+  if !foundClass then
+    throw (IO.userError "testExtractTypescript: FAIL - class 'UserService' not found")
+  if !foundInterface then
+    throw (IO.userError "testExtractTypescript: FAIL - interface 'Serializable' not found")
+  if !foundEnum then
+    throw (IO.userError "testExtractTypescript: FAIL - enum 'Color' not found")
+  if !foundTypeAlias then
+    throw (IO.userError "testExtractTypescript: FAIL - type alias 'StringOrNumber' not found")
+  if !foundFunction then
+    throw (IO.userError "testExtractTypescript: FAIL - function 'helper' not found")
+  IO.println s!"  testExtractTypescript: PASS (found {decls.size} top-level declarations)"
+
+def testExtractTsx : IO Unit := do
+  let decls ← extractTsx tsxSource
+  if decls.size == 0 then
+    throw (IO.userError "testExtractTsx: FAIL - no declarations found")
+  let mut foundInterface := false
+  let mut foundFunction := false
+  let mut foundClass := false
+  for d in decls do
+    if d.name == "Props" && d.declType == .interface_ then foundInterface := true
+    if d.name == "Greeting" && d.declType == .function_ then foundFunction := true
+    if d.name == "App" && d.declType == .class_ then foundClass := true
+  if !foundInterface then
+    throw (IO.userError "testExtractTsx: FAIL - interface 'Props' not found")
+  if !foundFunction then
+    throw (IO.userError "testExtractTsx: FAIL - function 'Greeting' not found")
+  if !foundClass then
+    throw (IO.userError "testExtractTsx: FAIL - class 'App' not found")
+  IO.println s!"  testExtractTsx: PASS (found {decls.size} top-level declarations, JSX did not interfere)"
+
+private def javascriptSource : String :=
+  "class EventEmitter {\n" ++
+  "    constructor() {\n" ++
+  "        this.listeners = {};\n" ++
+  "    }\n" ++
+  "\n" ++
+  "    on(event, callback) {\n" ++
+  "        if (!this.listeners[event]) this.listeners[event] = [];\n" ++
+  "        this.listeners[event].push(callback);\n" ++
+  "    }\n" ++
+  "}\n" ++
+  "\n" ++
+  "function createEmitter() {\n" ++
+  "    return new EventEmitter();\n" ++
+  "}\n" ++
+  "\n" ++
+  "function* range(start, end) {\n" ++
+  "    for (let i = start; i < end; i++) yield i;\n" ++
+  "}\n"
+
+def testExtractJavascript : IO Unit := do
+  let decls ← extractJavascript javascriptSource
+  if decls.size == 0 then
+    throw (IO.userError "testExtractJavascript: FAIL - no declarations found")
+  let mut foundClass := false
+  let mut foundFunction := false
+  let mut foundGenerator := false
+  for d in decls do
+    if d.name == "EventEmitter" && d.declType == .class_ then foundClass := true
+    if d.name == "createEmitter" && d.declType == .function_ then foundFunction := true
+    if d.name == "range" && d.declType == .function_ then foundGenerator := true
+  if !foundClass then
+    throw (IO.userError "testExtractJavascript: FAIL - class 'EventEmitter' not found")
+  if !foundFunction then
+    throw (IO.userError "testExtractJavascript: FAIL - function 'createEmitter' not found")
+  if !foundGenerator then
+    throw (IO.userError "testExtractJavascript: FAIL - generator function 'range' not found")
+  IO.println s!"  testExtractJavascript: PASS (found {decls.size} top-level declarations)"
+
 def runAllTests : IO Unit := do
   IO.println "Running Extraction Engine tests..."
   IO.println ""
   testExtractJava
   testExtractPython
   testExtractKotlin
+  testExtractTypescript
+  testExtractTsx
+  testExtractJavascript
   testSourceRanges
   testNestedDeclarations
   testChildNames
   testPythonMethodNames
   IO.println ""
-  IO.println "All Extraction tests passed! (7 tests)"
+  IO.println "All Extraction tests passed! (10 tests)"
 
 end Test.TS.Extract

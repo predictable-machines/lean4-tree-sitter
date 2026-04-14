@@ -7,3 +7,7 @@ ffi/tree-sitter/lib/
 ffi/parsers/java/
 ffi/parsers/python/
 ffi/parsers/kotlin/
+ffi/parsers/typescript/
+ffi/parsers/tsx/
+ffi/parsers/javascript/
+ffi/parsers/common/

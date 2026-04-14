@@ -178,4 +178,35 @@ def extractPython (source : String) : IO (Array Declaration) :=
 def extractKotlin (source : String) : IO (Array Declaration) :=
   extractDeclarations treeSitterKotlin kotlinNodeMapping source
 
+def typescriptNodeMapping : String → Option DeclarationType
+  | "class_declaration"            => some .class_
+  | "abstract_class_declaration"   => some .class_
+  | "interface_declaration"        => some .interface_
+  | "enum_declaration"             => some .enum_
+  | "type_alias_declaration"       => some .typeAlias
+  | "function_declaration"         => some .function_
+  | "method_definition"            => some .method_
+  | "public_field_definition"      => some .field_
+  | "function_signature"           => some .function_
+  | "abstract_method_signature"    => some .method_
+  | "module"                       => some .module_
+  | _ => none
+
+def extractTypescript (source : String) : IO (Array Declaration) :=
+  extractDeclarations treeSitterTypescript typescriptNodeMapping source
+
+def extractTsx (source : String) : IO (Array Declaration) :=
+  extractDeclarations treeSitterTsx typescriptNodeMapping source
+
+def javascriptNodeMapping : String → Option DeclarationType
+  | "class_declaration"            => some .class_
+  | "function_declaration"         => some .function_
+  | "generator_function_declaration" => some .function_
+  | "method_definition"            => some .method_
+  | "field_definition"             => some .field_
+  | _ => none
+
+def extractJavascript (source : String) : IO (Array Declaration) :=
+  extractDeclarations treeSitterJavascript javascriptNodeMapping source
+
 end TreeSitter.Extract

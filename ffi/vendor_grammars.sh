@@ -38,6 +38,11 @@ for lang in $(jq -r 'keys[] | select(. != "tree-sitter-core")' "$DEFINITIONS"); 
   cp "$src_dir"/parser.c "$PARSERS_DIR/$lang/src/"
   [ -f "$src_dir/scanner.c" ] && cp "$src_dir/scanner.c" "$PARSERS_DIR/$lang/src/"
   [ -d "$src_dir/tree_sitter" ] && cp -r "$src_dir/tree_sitter" "$PARSERS_DIR/$lang/src/"
+  # Copy shared common/ directory if present (e.g. tree-sitter-typescript)
+  if [ -d "$VENDOR_TMP/$lang/common" ]; then
+    mkdir -p "$PARSERS_DIR/common"
+    cp -r "$VENDOR_TMP/$lang/common/"* "$PARSERS_DIR/common/"
+  fi
 done
 
 rm -rf "$VENDOR_TMP"
