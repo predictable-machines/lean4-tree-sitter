@@ -20,4 +20,16 @@ opaque treeSitterTsx : IO TSLanguage
 @[extern "lean_tree_sitter_javascript"]
 opaque treeSitterJavascript : IO TSLanguage
 
+@[extern "lean_tree_sitter_go"]
+opaque treeSitterGo : IO TSLanguage
+
+@[extern "lean_tree_sitter_rust"]
+opaque treeSitterRust : IO TSLanguage
+
+@[extern "lean_tree_sitter_c_sharp"]
+opaque treeSitterCSharp : IO TSLanguage
+
+@[extern "lean_tree_sitter_ruby"]
+opaque treeSitterRuby : IO TSLanguage
+
 end TreeSitter.FFI

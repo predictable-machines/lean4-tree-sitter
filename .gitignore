@@ -10,4 +10,8 @@ ffi/parsers/kotlin/
 ffi/parsers/typescript/
 ffi/parsers/tsx/
 ffi/parsers/javascript/
+ffi/parsers/go/
+ffi/parsers/rust/
+ffi/parsers/csharp/
+ffi/parsers/ruby/
 ffi/parsers/common/

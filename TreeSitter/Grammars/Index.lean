@@ -3,3 +3,7 @@ import TreeSitter.Grammars.Python
 import TreeSitter.Grammars.Kotlin
 import TreeSitter.Grammars.TypeScript
 import TreeSitter.Grammars.JavaScript
+import TreeSitter.Grammars.Go
+import TreeSitter.Grammars.Rust
+import TreeSitter.Grammars.CSharp
+import TreeSitter.Grammars.Ruby

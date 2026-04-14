@@ -20,6 +20,10 @@ private def strContains (haystack needle : String) : Bool :=
 #check (GrammarSpec.decl_nodes_total (Node := KotlinNode))
 #check (GrammarSpec.decl_nodes_total (Node := TypeScriptNode))
 #check (GrammarSpec.decl_nodes_total (Node := JavaScriptNode))
+#check (GrammarSpec.decl_nodes_total (Node := GoNode))
+#check (GrammarSpec.decl_nodes_total (Node := RustNode))
+#check (GrammarSpec.decl_nodes_total (Node := CSharpNode))
+#check (GrammarSpec.decl_nodes_total (Node := RubyNode))
 
 -- Compile-time: verify specific mappings
 
@@ -53,6 +57,31 @@ example : GrammarSpec.toDeclarationType JavaScriptNode.function_declaration = so
 example : GrammarSpec.toDeclarationType JavaScriptNode.generator_function_declaration = some .function_ := rfl
 example : GrammarSpec.toDeclarationType JavaScriptNode.method_definition = some .method_ := rfl
 example : GrammarSpec.toDeclarationType JavaScriptNode.identifier = none := rfl
+
+example : GrammarSpec.toDeclarationType GoNode.function_declaration = some .function_ := rfl
+example : GrammarSpec.toDeclarationType GoNode.method_declaration = some .method_ := rfl
+example : GrammarSpec.toDeclarationType GoNode.type_spec = some .class_ := rfl
+example : GrammarSpec.toDeclarationType GoNode.identifier = none := rfl
+
+example : GrammarSpec.toDeclarationType RustNode.function_item = some .function_ := rfl
+example : GrammarSpec.toDeclarationType RustNode.struct_item = some .struct_ := rfl
+example : GrammarSpec.toDeclarationType RustNode.enum_item = some .enum_ := rfl
+example : GrammarSpec.toDeclarationType RustNode.trait_item = some .interface_ := rfl
+example : GrammarSpec.toDeclarationType RustNode.impl_item = some .class_ := rfl
+example : GrammarSpec.toDeclarationType RustNode.identifier = none := rfl
+
+example : GrammarSpec.toDeclarationType CSharpNode.class_declaration = some .class_ := rfl
+example : GrammarSpec.toDeclarationType CSharpNode.interface_declaration = some .interface_ := rfl
+example : GrammarSpec.toDeclarationType CSharpNode.struct_declaration = some .struct_ := rfl
+example : GrammarSpec.toDeclarationType CSharpNode.enum_declaration = some .enum_ := rfl
+example : GrammarSpec.toDeclarationType CSharpNode.method_declaration = some .method_ := rfl
+example : GrammarSpec.toDeclarationType CSharpNode.identifier = none := rfl
+
+example : GrammarSpec.toDeclarationType RubyNode.class = some .class_ := rfl
+example : GrammarSpec.toDeclarationType RubyNode.module = some .module_ := rfl
+example : GrammarSpec.toDeclarationType RubyNode.method = some .method_ := rfl
+example : GrammarSpec.toDeclarationType RubyNode.singleton_method = some .method_ := rfl
+example : GrammarSpec.toDeclarationType RubyNode.identifier = none := rfl
 
 -- Cross-language consistency: classes map to the same DeclarationType
 example : GrammarSpec.toDeclarationType JavaNode.class_declaration =
@@ -95,7 +124,19 @@ def testDeclarationNodeCounts : IO Unit := do
   let jsDecls := GrammarSpec.declarationNodes (Node := JavaScriptNode)
   if jsDecls.length != 5 then
     throw (IO.userError s!"testDeclarationNodeCounts: FAIL - JavaScript has {jsDecls.length} decl nodes, expected 5")
-  IO.println s!"  testDeclarationNodeCounts: PASS (Java={javaDecls.length}, Python={pythonDecls.length}, Kotlin={kotlinDecls.length}, TypeScript={tsDecls.length}, JavaScript={jsDecls.length})"
+  let goDecls := GrammarSpec.declarationNodes (Node := GoNode)
+  if goDecls.length != 3 then
+    throw (IO.userError s!"testDeclarationNodeCounts: FAIL - Go has {goDecls.length} decl nodes, expected 3")
+  let rustDecls := GrammarSpec.declarationNodes (Node := RustNode)
+  if rustDecls.length != 9 then
+    throw (IO.userError s!"testDeclarationNodeCounts: FAIL - Rust has {rustDecls.length} decl nodes, expected 9")
+  let csDecls := GrammarSpec.declarationNodes (Node := CSharpNode)
+  if csDecls.length != 11 then
+    throw (IO.userError s!"testDeclarationNodeCounts: FAIL - C# has {csDecls.length} decl nodes, expected 11")
+  let rubyDecls := GrammarSpec.declarationNodes (Node := RubyNode)
+  if rubyDecls.length != 4 then
+    throw (IO.userError s!"testDeclarationNodeCounts: FAIL - Ruby has {rubyDecls.length} decl nodes, expected 4")
+  IO.println s!"  testDeclarationNodeCounts: PASS (Java={javaDecls.length}, Python={pythonDecls.length}, Kotlin={kotlinDecls.length}, TypeScript={tsDecls.length}, JavaScript={jsDecls.length}, Go={goDecls.length}, Rust={rustDecls.length}, C#={csDecls.length}, Ruby={rubyDecls.length})"
 
 def testNameNodeCounts : IO Unit := do
   let javaNames := GrammarSpec.nameNodes (Node := JavaNode)
@@ -113,7 +154,19 @@ def testNameNodeCounts : IO Unit := do
   let jsNames := GrammarSpec.nameNodes (Node := JavaScriptNode)
   if jsNames.length != 2 then
     throw (IO.userError s!"testNameNodeCounts: FAIL - JavaScript has {jsNames.length} name nodes, expected 2")
-  IO.println s!"  testNameNodeCounts: PASS (Java={javaNames.length}, Python={pythonNames.length}, Kotlin={kotlinNames.length}, TypeScript={tsNames.length}, JavaScript={jsNames.length})"
+  let goNames := GrammarSpec.nameNodes (Node := GoNode)
+  if goNames.length != 3 then
+    throw (IO.userError s!"testNameNodeCounts: FAIL - Go has {goNames.length} name nodes, expected 3")
+  let rustNames := GrammarSpec.nameNodes (Node := RustNode)
+  if rustNames.length != 2 then
+    throw (IO.userError s!"testNameNodeCounts: FAIL - Rust has {rustNames.length} name nodes, expected 2")
+  let csNames := GrammarSpec.nameNodes (Node := CSharpNode)
+  if csNames.length != 1 then
+    throw (IO.userError s!"testNameNodeCounts: FAIL - C# has {csNames.length} name nodes, expected 1")
+  let rubyNames := GrammarSpec.nameNodes (Node := RubyNode)
+  if rubyNames.length != 3 then
+    throw (IO.userError s!"testNameNodeCounts: FAIL - Ruby has {rubyNames.length} name nodes, expected 3")
+  IO.println s!"  testNameNodeCounts: PASS (Java={javaNames.length}, Python={pythonNames.length}, Kotlin={kotlinNames.length}, TypeScript={tsNames.length}, JavaScript={jsNames.length}, Go={goNames.length}, Rust={rustNames.length}, C#={csNames.length}, Ruby={rubyNames.length})"
 
 def runAllTests : IO Unit := do
   IO.println "Running GrammarSpec tests..."
@@ -122,6 +175,6 @@ def runAllTests : IO Unit := do
   testDeclarationNodeCounts
   testNameNodeCounts
   IO.println ""
-  IO.println "All GrammarSpec tests passed! (3 runtime + 31 compile-time)"
+  IO.println "All GrammarSpec tests passed! (3 runtime + 52 compile-time)"
 
 end Test.TS.GrammarSpec
