@@ -9,6 +9,13 @@
 extern const TSLanguage *tree_sitter_java(void);
 extern const TSLanguage *tree_sitter_python(void);
 extern const TSLanguage *tree_sitter_kotlin(void);
+extern const TSLanguage *tree_sitter_typescript(void);
+extern const TSLanguage *tree_sitter_tsx(void);
+extern const TSLanguage *tree_sitter_javascript(void);
+extern const TSLanguage *tree_sitter_go(void);
+extern const TSLanguage *tree_sitter_rust(void);
+extern const TSLanguage *tree_sitter_c_sharp(void);
+extern const TSLanguage *tree_sitter_ruby(void);
 
 /* --- Helpers --- */
 
@@ -207,6 +214,41 @@ LEAN_EXPORT lean_obj_res lean_tree_sitter_python(lean_obj_arg world) {
 LEAN_EXPORT lean_obj_res lean_tree_sitter_kotlin(lean_obj_arg world) {
     return lean_io_result_mk_ok(
         lean_alloc_external(get_ts_language_class(), (void *)tree_sitter_kotlin()));
+}
+
+LEAN_EXPORT lean_obj_res lean_tree_sitter_typescript(lean_obj_arg world) {
+    return lean_io_result_mk_ok(
+        lean_alloc_external(get_ts_language_class(), (void *)tree_sitter_typescript()));
+}
+
+LEAN_EXPORT lean_obj_res lean_tree_sitter_tsx(lean_obj_arg world) {
+    return lean_io_result_mk_ok(
+        lean_alloc_external(get_ts_language_class(), (void *)tree_sitter_tsx()));
+}
+
+LEAN_EXPORT lean_obj_res lean_tree_sitter_javascript(lean_obj_arg world) {
+    return lean_io_result_mk_ok(
+        lean_alloc_external(get_ts_language_class(), (void *)tree_sitter_javascript()));
+}
+
+LEAN_EXPORT lean_obj_res lean_tree_sitter_go(lean_obj_arg world) {
+    return lean_io_result_mk_ok(
+        lean_alloc_external(get_ts_language_class(), (void *)tree_sitter_go()));
+}
+
+LEAN_EXPORT lean_obj_res lean_tree_sitter_rust(lean_obj_arg world) {
+    return lean_io_result_mk_ok(
+        lean_alloc_external(get_ts_language_class(), (void *)tree_sitter_rust()));
+}
+
+LEAN_EXPORT lean_obj_res lean_tree_sitter_c_sharp(lean_obj_arg world) {
+    return lean_io_result_mk_ok(
+        lean_alloc_external(get_ts_language_class(), (void *)tree_sitter_c_sharp()));
+}
+
+LEAN_EXPORT lean_obj_res lean_tree_sitter_ruby(lean_obj_arg world) {
+    return lean_io_result_mk_ok(
+        lean_alloc_external(get_ts_language_class(), (void *)tree_sitter_ruby()));
 }
 
 /* ===================== */

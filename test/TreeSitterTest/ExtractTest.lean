@@ -151,17 +151,333 @@ def testPythonMethodNames : IO Unit := do
     throw (IO.userError s!"testPythonMethodNames: FAIL - add not found, got {calcMethods}")
   IO.println s!"  testPythonMethodNames: PASS (Calculator methods: {calcMethods})"
 
+private def typescriptSource : String :=
+  "export class UserService {\n" ++
+  "    private name: string;\n" ++
+  "\n" ++
+  "    constructor(name: string) {\n" ++
+  "        this.name = name;\n" ++
+  "    }\n" ++
+  "\n" ++
+  "    getName(): string {\n" ++
+  "        return this.name;\n" ++
+  "    }\n" ++
+  "}\n" ++
+  "\n" ++
+  "interface Serializable {\n" ++
+  "    serialize(): string;\n" ++
+  "}\n" ++
+  "\n" ++
+  "enum Color {\n" ++
+  "    Red,\n" ++
+  "    Green,\n" ++
+  "    Blue\n" ++
+  "}\n" ++
+  "\n" ++
+  "type StringOrNumber = string | number;\n" ++
+  "\n" ++
+  "function helper(x: number): number {\n" ++
+  "    return x + 1;\n" ++
+  "}\n"
+
+private def tsxSource : String :=
+  "interface Props {\n" ++
+  "    name: string;\n" ++
+  "}\n" ++
+  "\n" ++
+  "function Greeting(props: Props): JSX.Element {\n" ++
+  "    return <div>Hello, {props.name}!</div>;\n" ++
+  "}\n" ++
+  "\n" ++
+  "export class App {\n" ++
+  "    render() {\n" ++
+  "        return <Greeting name=\"World\" />;\n" ++
+  "    }\n" ++
+  "}\n"
+
+def testExtractTypescript : IO Unit := do
+  let decls ← extractTypescript typescriptSource
+  if decls.size == 0 then
+    throw (IO.userError "testExtractTypescript: FAIL - no declarations found")
+  let mut foundClass := false
+  let mut foundInterface := false
+  let mut foundEnum := false
+  let mut foundTypeAlias := false
+  let mut foundFunction := false
+  for d in decls do
+    if d.name == "UserService" && d.declType == .class_ then foundClass := true
+    if d.name == "Serializable" && d.declType == .interface_ then foundInterface := true
+    if d.name == "Color" && d.declType == .enum_ then foundEnum := true
+    if d.name == "StringOrNumber" && d.declType == .typeAlias then foundTypeAlias := true
+    if d.name == "helper" && d.declType == .function_ then foundFunction := true
+  if !foundClass then
+    throw (IO.userError "testExtractTypescript: FAIL - class 'UserService' not found")
+  if !foundInterface then
+    throw (IO.userError "testExtractTypescript: FAIL - interface 'Serializable' not found")
+  if !foundEnum then
+    throw (IO.userError "testExtractTypescript: FAIL - enum 'Color' not found")
+  if !foundTypeAlias then
+    throw (IO.userError "testExtractTypescript: FAIL - type alias 'StringOrNumber' not found")
+  if !foundFunction then
+    throw (IO.userError "testExtractTypescript: FAIL - function 'helper' not found")
+  IO.println s!"  testExtractTypescript: PASS (found {decls.size} top-level declarations)"
+
+def testExtractTsx : IO Unit := do
+  let decls ← extractTsx tsxSource
+  if decls.size == 0 then
+    throw (IO.userError "testExtractTsx: FAIL - no declarations found")
+  let mut foundInterface := false
+  let mut foundFunction := false
+  let mut foundClass := false
+  for d in decls do
+    if d.name == "Props" && d.declType == .interface_ then foundInterface := true
+    if d.name == "Greeting" && d.declType == .function_ then foundFunction := true
+    if d.name == "App" && d.declType == .class_ then foundClass := true
+  if !foundInterface then
+    throw (IO.userError "testExtractTsx: FAIL - interface 'Props' not found")
+  if !foundFunction then
+    throw (IO.userError "testExtractTsx: FAIL - function 'Greeting' not found")
+  if !foundClass then
+    throw (IO.userError "testExtractTsx: FAIL - class 'App' not found")
+  IO.println s!"  testExtractTsx: PASS (found {decls.size} top-level declarations, JSX did not interfere)"
+
+private def javascriptSource : String :=
+  "class EventEmitter {\n" ++
+  "    constructor() {\n" ++
+  "        this.listeners = {};\n" ++
+  "    }\n" ++
+  "\n" ++
+  "    on(event, callback) {\n" ++
+  "        if (!this.listeners[event]) this.listeners[event] = [];\n" ++
+  "        this.listeners[event].push(callback);\n" ++
+  "    }\n" ++
+  "}\n" ++
+  "\n" ++
+  "function createEmitter() {\n" ++
+  "    return new EventEmitter();\n" ++
+  "}\n" ++
+  "\n" ++
+  "function* range(start, end) {\n" ++
+  "    for (let i = start; i < end; i++) yield i;\n" ++
+  "}\n"
+
+def testExtractJavascript : IO Unit := do
+  let decls ← extractJavascript javascriptSource
+  if decls.size == 0 then
+    throw (IO.userError "testExtractJavascript: FAIL - no declarations found")
+  let mut foundClass := false
+  let mut foundFunction := false
+  let mut foundGenerator := false
+  for d in decls do
+    if d.name == "EventEmitter" && d.declType == .class_ then foundClass := true
+    if d.name == "createEmitter" && d.declType == .function_ then foundFunction := true
+    if d.name == "range" && d.declType == .function_ then foundGenerator := true
+  if !foundClass then
+    throw (IO.userError "testExtractJavascript: FAIL - class 'EventEmitter' not found")
+  if !foundFunction then
+    throw (IO.userError "testExtractJavascript: FAIL - function 'createEmitter' not found")
+  if !foundGenerator then
+    throw (IO.userError "testExtractJavascript: FAIL - generator function 'range' not found")
+  IO.println s!"  testExtractJavascript: PASS (found {decls.size} top-level declarations)"
+
+private def goSource : String :=
+  "package main\n" ++
+  "\n" ++
+  "type Server struct {\n" ++
+  "    host string\n" ++
+  "    port int\n" ++
+  "}\n" ++
+  "\n" ++
+  "func NewServer(host string, port int) *Server {\n" ++
+  "    return &Server{host: host, port: port}\n" ++
+  "}\n" ++
+  "\n" ++
+  "func (s *Server) Start() error {\n" ++
+  "    return nil\n" ++
+  "}\n"
+
+def testExtractGo : IO Unit := do
+  let decls ← extractGo goSource
+  if decls.size == 0 then
+    throw (IO.userError "testExtractGo: FAIL - no declarations found")
+  let mut foundStruct := false
+  let mut foundFunction := false
+  let mut foundMethod := false
+  for d in decls do
+    if d.name == "Server" && d.declType == .class_ then foundStruct := true
+    if d.name == "NewServer" && d.declType == .function_ then foundFunction := true
+    if d.name == "Start" && d.declType == .method_ then foundMethod := true
+  if !foundStruct then
+    throw (IO.userError "testExtractGo: FAIL - type 'Server' not found")
+  if !foundFunction then
+    throw (IO.userError "testExtractGo: FAIL - function 'NewServer' not found")
+  if !foundMethod then
+    throw (IO.userError "testExtractGo: FAIL - method 'Start' not found")
+  IO.println s!"  testExtractGo: PASS (found {decls.size} top-level declarations)"
+
+private def rustSource : String :=
+  "pub struct Config {\n" ++
+  "    pub name: String,\n" ++
+  "    pub debug: bool,\n" ++
+  "}\n" ++
+  "\n" ++
+  "pub enum Status {\n" ++
+  "    Active,\n" ++
+  "    Inactive,\n" ++
+  "}\n" ++
+  "\n" ++
+  "pub trait Runnable {\n" ++
+  "    fn run(&self);\n" ++
+  "}\n" ++
+  "\n" ++
+  "impl Config {\n" ++
+  "    pub fn new(name: String) -> Self {\n" ++
+  "        Config { name, debug: false }\n" ++
+  "    }\n" ++
+  "}\n" ++
+  "\n" ++
+  "fn helper() -> bool {\n" ++
+  "    true\n" ++
+  "}\n"
+
+def testExtractRust : IO Unit := do
+  let decls ← extractRust rustSource
+  if decls.size == 0 then
+    throw (IO.userError "testExtractRust: FAIL - no declarations found")
+  let mut foundStruct := false
+  let mut foundEnum := false
+  let mut foundTrait := false
+  let mut foundImpl := false
+  let mut foundFunction := false
+  for d in decls do
+    if d.name == "Config" && d.declType == .struct_ then foundStruct := true
+    if d.name == "Status" && d.declType == .enum_ then foundEnum := true
+    if d.name == "Runnable" && d.declType == .interface_ then foundTrait := true
+    if d.name == "Config" && d.declType == .class_ then foundImpl := true
+    if d.name == "helper" && d.declType == .function_ then foundFunction := true
+  if !foundStruct then
+    throw (IO.userError "testExtractRust: FAIL - struct 'Config' not found")
+  if !foundEnum then
+    throw (IO.userError "testExtractRust: FAIL - enum 'Status' not found")
+  if !foundTrait then
+    throw (IO.userError "testExtractRust: FAIL - trait 'Runnable' not found")
+  if !foundImpl then
+    throw (IO.userError "testExtractRust: FAIL - impl 'Config' not found")
+  if !foundFunction then
+    throw (IO.userError "testExtractRust: FAIL - function 'helper' not found")
+  IO.println s!"  testExtractRust: PASS (found {decls.size} top-level declarations)"
+
+private def csharpSource : String :=
+  "namespace MyApp {\n" ++
+  "    public class UserService {\n" ++
+  "        private string name;\n" ++
+  "\n" ++
+  "        public UserService(string name) {\n" ++
+  "            this.name = name;\n" ++
+  "        }\n" ++
+  "\n" ++
+  "        public string GetName() {\n" ++
+  "            return name;\n" ++
+  "        }\n" ++
+  "    }\n" ++
+  "\n" ++
+  "    public interface IRepository {\n" ++
+  "        void Save();\n" ++
+  "    }\n" ++
+  "\n" ++
+  "    public enum Status {\n" ++
+  "        Active,\n" ++
+  "        Inactive\n" ++
+  "    }\n" ++
+  "}\n"
+
+def testExtractCSharp : IO Unit := do
+  let decls ← extractCSharp csharpSource
+  if decls.size == 0 then
+    throw (IO.userError "testExtractCSharp: FAIL - no declarations found")
+  let mut foundNamespace := false
+  let mut foundClass := false
+  let mut foundInterface := false
+  let mut foundEnum := false
+  for d in decls do
+    if d.name == "MyApp" && d.declType == .module_ then foundNamespace := true
+    if d.name == "UserService" && d.declType == .class_ then foundClass := true
+    if d.name == "IRepository" && d.declType == .interface_ then foundInterface := true
+    if d.name == "Status" && d.declType == .enum_ then foundEnum := true
+  -- Check nested declarations too
+  for d in decls do
+    for child in d.children do
+      if child.name == "UserService" && child.declType == .class_ then foundClass := true
+      if child.name == "IRepository" && child.declType == .interface_ then foundInterface := true
+      if child.name == "Status" && child.declType == .enum_ then foundEnum := true
+      for gc in child.children do
+        if gc.name == "UserService" && gc.declType == .class_ then foundClass := true
+        if gc.name == "IRepository" && gc.declType == .interface_ then foundInterface := true
+        if gc.name == "Status" && gc.declType == .enum_ then foundEnum := true
+  if !foundNamespace then
+    throw (IO.userError "testExtractCSharp: FAIL - namespace 'MyApp' not found")
+  if !foundClass then
+    throw (IO.userError "testExtractCSharp: FAIL - class 'UserService' not found")
+  if !foundInterface then
+    throw (IO.userError "testExtractCSharp: FAIL - interface 'IRepository' not found")
+  if !foundEnum then
+    throw (IO.userError "testExtractCSharp: FAIL - enum 'Status' not found")
+  IO.println s!"  testExtractCSharp: PASS (found {decls.size} top-level declarations)"
+
+private def rubySource : String :=
+  "module Logging\n" ++
+  "  def log(msg)\n" ++
+  "    puts msg\n" ++
+  "  end\n" ++
+  "end\n" ++
+  "\n" ++
+  "class UserService\n" ++
+  "  def initialize(name)\n" ++
+  "    @name = name\n" ++
+  "  end\n" ++
+  "\n" ++
+  "  def get_name\n" ++
+  "    @name\n" ++
+  "  end\n" ++
+  "\n" ++
+  "  def self.create(name)\n" ++
+  "    new(name)\n" ++
+  "  end\n" ++
+  "end\n"
+
+def testExtractRuby : IO Unit := do
+  let decls ← extractRuby rubySource
+  if decls.size == 0 then
+    throw (IO.userError "testExtractRuby: FAIL - no declarations found")
+  let mut foundModule := false
+  let mut foundClass := false
+  for d in decls do
+    if d.name == "Logging" && d.declType == .module_ then foundModule := true
+    if d.name == "UserService" && d.declType == .class_ then foundClass := true
+  if !foundModule then
+    throw (IO.userError "testExtractRuby: FAIL - module 'Logging' not found")
+  if !foundClass then
+    throw (IO.userError "testExtractRuby: FAIL - class 'UserService' not found")
+  IO.println s!"  testExtractRuby: PASS (found {decls.size} top-level declarations)"
+
 def runAllTests : IO Unit := do
   IO.println "Running Extraction Engine tests..."
   IO.println ""
   testExtractJava
   testExtractPython
   testExtractKotlin
+  testExtractTypescript
+  testExtractTsx
+  testExtractJavascript
+  testExtractGo
+  testExtractRust
+  testExtractCSharp
+  testExtractRuby
   testSourceRanges
   testNestedDeclarations
   testChildNames
   testPythonMethodNames
   IO.println ""
-  IO.println "All Extraction tests passed! (7 tests)"
+  IO.println "All Extraction tests passed! (14 tests)"
 
 end Test.TS.Extract
