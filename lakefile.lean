@@ -2,7 +2,7 @@ import Lake
 open Lake DSL System
 
 package «tree-sitter» where
-  version := v!"0.2.0"
+  version := v!"0.2.1"
 
 private def ffiDir (pkg : Package) : FilePath := pkg.dir / "ffi"
 private def tsInclude (pkg : Package) : FilePath := ffiDir pkg / "tree-sitter" / "lib" / "include"
@@ -163,6 +163,23 @@ extern_lib «tree-sitter-lean» pkg := do
       javascript, javascriptScanner,
       go, rust, rustScanner, csharp, csharpScanner,
       ruby, rubyScanner, shim]
+
+post_update pkg do
+  let rootPkg ← getRootPackage
+  if rootPkg.baseName = pkg.baseName then
+    return
+  let ffi := ffiDir pkg
+  let libC := tsSrcDir pkg / "lib.c"
+  let javaC := parsersDir pkg / "java" / "src" / "parser.c"
+  unless (← libC.pathExists) && (← javaC.pathExists) do
+    IO.println "Vendoring tree-sitter grammars..."
+    let result ← IO.Process.output {
+      cmd := "bash"
+      args := #["vendor_grammars.sh"]
+      cwd := ffi }
+    if result.exitCode ≠ 0 then
+      IO.eprintln result.stderr
+      error s!"{pkg.baseName}: failed to vendor grammars"
 
 @[default_target]
 lean_lib TreeSitter where
