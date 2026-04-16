@@ -2,7 +2,7 @@ import Lake
 open Lake DSL System
 
 package «tree-sitter» where
-  version := v!"0.1.2"
+  version := v!"0.2.0"
 
 private def ffiDir (pkg : Package) : FilePath := pkg.dir / "ffi"
 private def tsInclude (pkg : Package) : FilePath := ffiDir pkg / "tree-sitter" / "lib" / "include"
