@@ -50,6 +50,84 @@ target ts_kotlin_scanner.o pkg : FilePath := do
   buildO (pkg.irDir / "ffi" / "ts_kotlin_scanner.o") srcJob
     (weakArgs := cFlags pkg ++ #["-I", (parsersDir pkg / "kotlin" / "src").toString])
 
+target ts_typescript.o pkg : FilePath := do
+  let src := parsersDir pkg / "typescript" / "src" / "parser.c"
+  let srcJob ← inputBinFile src
+  buildO (pkg.irDir / "ffi" / "ts_typescript.o") srcJob
+    (weakArgs := cFlags pkg ++ #["-I", (parsersDir pkg / "typescript" / "src").toString])
+
+target ts_typescript_scanner.o pkg : FilePath := do
+  let src := parsersDir pkg / "typescript" / "src" / "scanner.c"
+  let srcJob ← inputBinFile src
+  buildO (pkg.irDir / "ffi" / "ts_typescript_scanner.o") srcJob
+    (weakArgs := cFlags pkg ++ #["-I", (parsersDir pkg / "typescript" / "src").toString])
+
+target ts_tsx.o pkg : FilePath := do
+  let src := parsersDir pkg / "tsx" / "src" / "parser.c"
+  let srcJob ← inputBinFile src
+  buildO (pkg.irDir / "ffi" / "ts_tsx.o") srcJob
+    (weakArgs := cFlags pkg ++ #["-I", (parsersDir pkg / "tsx" / "src").toString])
+
+target ts_tsx_scanner.o pkg : FilePath := do
+  let src := parsersDir pkg / "tsx" / "src" / "scanner.c"
+  let srcJob ← inputBinFile src
+  buildO (pkg.irDir / "ffi" / "ts_tsx_scanner.o") srcJob
+    (weakArgs := cFlags pkg ++ #["-I", (parsersDir pkg / "tsx" / "src").toString])
+
+target ts_javascript.o pkg : FilePath := do
+  let src := parsersDir pkg / "javascript" / "src" / "parser.c"
+  let srcJob ← inputBinFile src
+  buildO (pkg.irDir / "ffi" / "ts_javascript.o") srcJob
+    (weakArgs := cFlags pkg ++ #["-I", (parsersDir pkg / "javascript" / "src").toString])
+
+target ts_javascript_scanner.o pkg : FilePath := do
+  let src := parsersDir pkg / "javascript" / "src" / "scanner.c"
+  let srcJob ← inputBinFile src
+  buildO (pkg.irDir / "ffi" / "ts_javascript_scanner.o") srcJob
+    (weakArgs := cFlags pkg ++ #["-I", (parsersDir pkg / "javascript" / "src").toString])
+
+target ts_go.o pkg : FilePath := do
+  let src := parsersDir pkg / "go" / "src" / "parser.c"
+  let srcJob ← inputBinFile src
+  buildO (pkg.irDir / "ffi" / "ts_go.o") srcJob
+    (weakArgs := cFlags pkg ++ #["-I", (parsersDir pkg / "go" / "src").toString])
+
+target ts_rust.o pkg : FilePath := do
+  let src := parsersDir pkg / "rust" / "src" / "parser.c"
+  let srcJob ← inputBinFile src
+  buildO (pkg.irDir / "ffi" / "ts_rust.o") srcJob
+    (weakArgs := cFlags pkg ++ #["-I", (parsersDir pkg / "rust" / "src").toString])
+
+target ts_rust_scanner.o pkg : FilePath := do
+  let src := parsersDir pkg / "rust" / "src" / "scanner.c"
+  let srcJob ← inputBinFile src
+  buildO (pkg.irDir / "ffi" / "ts_rust_scanner.o") srcJob
+    (weakArgs := cFlags pkg ++ #["-I", (parsersDir pkg / "rust" / "src").toString])
+
+target ts_csharp.o pkg : FilePath := do
+  let src := parsersDir pkg / "csharp" / "src" / "parser.c"
+  let srcJob ← inputBinFile src
+  buildO (pkg.irDir / "ffi" / "ts_csharp.o") srcJob
+    (weakArgs := cFlags pkg ++ #["-I", (parsersDir pkg / "csharp" / "src").toString])
+
+target ts_csharp_scanner.o pkg : FilePath := do
+  let src := parsersDir pkg / "csharp" / "src" / "scanner.c"
+  let srcJob ← inputBinFile src
+  buildO (pkg.irDir / "ffi" / "ts_csharp_scanner.o") srcJob
+    (weakArgs := cFlags pkg ++ #["-I", (parsersDir pkg / "csharp" / "src").toString])
+
+target ts_ruby.o pkg : FilePath := do
+  let src := parsersDir pkg / "ruby" / "src" / "parser.c"
+  let srcJob ← inputBinFile src
+  buildO (pkg.irDir / "ffi" / "ts_ruby.o") srcJob
+    (weakArgs := cFlags pkg ++ #["-I", (parsersDir pkg / "ruby" / "src").toString])
+
+target ts_ruby_scanner.o pkg : FilePath := do
+  let src := parsersDir pkg / "ruby" / "src" / "scanner.c"
+  let srcJob ← inputBinFile src
+  buildO (pkg.irDir / "ffi" / "ts_ruby_scanner.o") srcJob
+    (weakArgs := cFlags pkg ++ #["-I", (parsersDir pkg / "ruby" / "src").toString])
+
 target ts_shim.o pkg : FilePath := do
   let src := ffiDir pkg / "shim.c"
   let srcJob ← inputBinFile src
@@ -57,7 +135,21 @@ target ts_shim.o pkg : FilePath := do
   buildO (pkg.irDir / "ffi" / "ts_shim.o") srcJob
     (weakArgs := cFlags pkg ++ #["-I", leanInclude.toString])
 
+private def ensureVendored (pkg : Package) : IO Unit := do
+  let libC := tsSrcDir pkg / "lib.c"
+  let javaC := parsersDir pkg / "java" / "src" / "parser.c"
+  unless (← libC.pathExists) && (← javaC.pathExists) do
+    IO.println "Vendoring tree-sitter grammars..."
+    let result ← IO.Process.output {
+      cmd := "bash"
+      args := #["vendor_grammars.sh"]
+      cwd := ffiDir pkg }
+    if result.exitCode ≠ 0 then
+      IO.eprintln result.stderr
+      throw <| IO.userError "tree-sitter: failed to vendor grammars"
+
 extern_lib «tree-sitter-lean» pkg := do
+  ensureVendored pkg
   let name := nameToStaticLib "tree-sitter-lean"
   let core ← fetch <| pkg.target ``ts_core.o
   let java ← fetch <| pkg.target ``ts_java.o
@@ -65,9 +157,43 @@ extern_lib «tree-sitter-lean» pkg := do
   let pythonScanner ← fetch <| pkg.target ``ts_python_scanner.o
   let kotlin ← fetch <| pkg.target ``ts_kotlin.o
   let kotlinScanner ← fetch <| pkg.target ``ts_kotlin_scanner.o
+  let typescript ← fetch <| pkg.target ``ts_typescript.o
+  let typescriptScanner ← fetch <| pkg.target ``ts_typescript_scanner.o
+  let tsx ← fetch <| pkg.target ``ts_tsx.o
+  let tsxScanner ← fetch <| pkg.target ``ts_tsx_scanner.o
+  let javascript ← fetch <| pkg.target ``ts_javascript.o
+  let javascriptScanner ← fetch <| pkg.target ``ts_javascript_scanner.o
+  let go ← fetch <| pkg.target ``ts_go.o
+  let rust ← fetch <| pkg.target ``ts_rust.o
+  let rustScanner ← fetch <| pkg.target ``ts_rust_scanner.o
+  let csharp ← fetch <| pkg.target ``ts_csharp.o
+  let csharpScanner ← fetch <| pkg.target ``ts_csharp_scanner.o
+  let ruby ← fetch <| pkg.target ``ts_ruby.o
+  let rubyScanner ← fetch <| pkg.target ``ts_ruby_scanner.o
   let shim ← fetch <| pkg.target ``ts_shim.o
   buildStaticLib (pkg.staticLibDir / name)
-    #[core, java, python, pythonScanner, kotlin, kotlinScanner, shim]
+    #[core, java, python, pythonScanner, kotlin, kotlinScanner,
+      typescript, typescriptScanner, tsx, tsxScanner,
+      javascript, javascriptScanner,
+      go, rust, rustScanner, csharp, csharpScanner,
+      ruby, rubyScanner, shim]
+
+post_update pkg do
+  let rootPkg ← getRootPackage
+  if rootPkg.baseName = pkg.baseName then
+    return
+  let ffi := ffiDir pkg
+  let libC := tsSrcDir pkg / "lib.c"
+  let javaC := parsersDir pkg / "java" / "src" / "parser.c"
+  unless (← libC.pathExists) && (← javaC.pathExists) do
+    IO.println "Vendoring tree-sitter grammars..."
+    let result ← IO.Process.output {
+      cmd := "bash"
+      args := #["vendor_grammars.sh"]
+      cwd := ffi }
+    if result.exitCode ≠ 0 then
+      IO.eprintln result.stderr
+      error s!"{pkg.baseName}: failed to vendor grammars"
 
 @[default_target]
 lean_lib TreeSitter where

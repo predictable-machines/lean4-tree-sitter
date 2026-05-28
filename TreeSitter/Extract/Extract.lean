@@ -20,7 +20,9 @@ def parseSource (lang : IO TSLanguage) (source : String) : IO TSTree := do
   parser.parseString source
 
 private def isIdentifierType (nodeType : String) : Bool :=
-  nodeType == "identifier" || nodeType == "simple_identifier"
+  nodeType == "identifier" || nodeType == "simple_identifier" ||
+  nodeType == "field_identifier" || nodeType == "property_identifier" ||
+  nodeType == "constant"
 
 /-- Resolve the name of a declaration node using multiple strategies:
     1. Try grammar field "name" (covers most declaration types)
@@ -177,5 +179,87 @@ def extractPython (source : String) : IO (Array Declaration) :=
 
 def extractKotlin (source : String) : IO (Array Declaration) :=
   extractDeclarations treeSitterKotlin kotlinNodeMapping source
+
+def typescriptNodeMapping : String → Option DeclarationType
+  | "class_declaration"            => some .class_
+  | "abstract_class_declaration"   => some .class_
+  | "interface_declaration"        => some .interface_
+  | "enum_declaration"             => some .enum_
+  | "type_alias_declaration"       => some .typeAlias
+  | "function_declaration"         => some .function_
+  | "method_definition"            => some .method_
+  | "public_field_definition"      => some .field_
+  | "function_signature"           => some .function_
+  | "abstract_method_signature"    => some .method_
+  | "module"                       => some .module_
+  | _ => none
+
+def extractTypescript (source : String) : IO (Array Declaration) :=
+  extractDeclarations treeSitterTypescript typescriptNodeMapping source
+
+def extractTsx (source : String) : IO (Array Declaration) :=
+  extractDeclarations treeSitterTsx typescriptNodeMapping source
+
+def javascriptNodeMapping : String → Option DeclarationType
+  | "class_declaration"            => some .class_
+  | "function_declaration"         => some .function_
+  | "generator_function_declaration" => some .function_
+  | "method_definition"            => some .method_
+  | "field_definition"             => some .field_
+  | _ => none
+
+def extractJavascript (source : String) : IO (Array Declaration) :=
+  extractDeclarations treeSitterJavascript javascriptNodeMapping source
+
+def goNodeMapping : String → Option DeclarationType
+  | "function_declaration" => some .function_
+  | "method_declaration"   => some .method_
+  | "type_spec"            => some .class_
+  | _ => none
+
+def extractGo (source : String) : IO (Array Declaration) :=
+  extractDeclarations treeSitterGo goNodeMapping source
+
+def rustNodeMapping : String → Option DeclarationType
+  | "function_item" => some .function_
+  | "struct_item"   => some .struct_
+  | "enum_item"     => some .enum_
+  | "trait_item"    => some .interface_
+  | "impl_item"     => some .class_
+  | "type_item"     => some .typeAlias
+  | "mod_item"      => some .module_
+  | "const_item"    => some .constant_
+  | "static_item"   => some .constant_
+  | _ => none
+
+def extractRust (source : String) : IO (Array Declaration) :=
+  extractDeclarations treeSitterRust rustNodeMapping source
+
+def csharpNodeMapping : String → Option DeclarationType
+  | "class_declaration"       => some .class_
+  | "interface_declaration"   => some .interface_
+  | "struct_declaration"      => some .struct_
+  | "enum_declaration"        => some .enum_
+  | "record_declaration"      => some .class_
+  | "method_declaration"      => some .method_
+  | "constructor_declaration" => some .constructor_
+  | "property_declaration"    => some .property_
+  | "field_declaration"       => some .field_
+  | "namespace_declaration"   => some .module_
+  | "delegate_declaration"    => some .typeAlias
+  | _ => none
+
+def extractCSharp (source : String) : IO (Array Declaration) :=
+  extractDeclarations treeSitterCSharp csharpNodeMapping source
+
+def rubyNodeMapping : String → Option DeclarationType
+  | "class"           => some .class_
+  | "module"          => some .module_
+  | "method"          => some .method_
+  | "singleton_method" => some .method_
+  | _ => none
+
+def extractRuby (source : String) : IO (Array Declaration) :=
+  extractDeclarations treeSitterRuby rubyNodeMapping source
 
 end TreeSitter.Extract

@@ -26,7 +26,7 @@ vendor-grammars:
 # Clean build artifacts and vendored grammars
 clean:
 	lake clean
-	rm -rf ffi/tree-sitter/lib ffi/parsers/java ffi/parsers/python ffi/parsers/kotlin
+	rm -rf ffi/tree-sitter/lib ffi/parsers/java ffi/parsers/python ffi/parsers/kotlin ffi/parsers/typescript ffi/parsers/tsx ffi/parsers/javascript ffi/parsers/go ffi/parsers/rust ffi/parsers/csharp ffi/parsers/ruby ffi/parsers/common
 
 # Show help
 help:
