@@ -12,7 +12,7 @@ Lean 4 bindings for [tree-sitter](https://tree-sitter.github.io/tree-sitter/) â€
 
 ## Requirements
 
-- [Lean 4](https://lean-lang.org/) (v4.28.0 or compatible)
+- [Lean 4](https://lean-lang.org/) (v4.32.0 or compatible)
 - [elan](https://github.com/leanprover/elan) - Lean version manager (recommended)
 - C compiler (gcc or clang) for tree-sitter FFI compilation
 
