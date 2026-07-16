@@ -196,7 +196,7 @@ def testQueryJava : IO Unit := do
           -- Extract the text using byte offsets
           let startByte ← captureNode.startByte
           let endByte ← captureNode.endByte
-          className := (javaSource.toSubstring.drop startByte.toNat).take (endByte.toNat - startByte.toNat) |>.toString
+          className := (javaSource.toRawSubstring.drop startByte.toNat).take (endByte.toNat - startByte.toNat) |>.toString
   if matchCount == 0 then
     throw (IO.userError "testQueryJava: FAIL - no matches found")
   if className != "UserService" then
