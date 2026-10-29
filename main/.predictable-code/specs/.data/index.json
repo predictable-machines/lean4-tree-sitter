@@ -1,0 +1,31 @@
+{"witnesses.json":
+ "the execution evidence behind every `### Witnessed` requirement (key = the obligation id the row carries in analysisKey, status, witness value, repro call, dead table entries, reached/violated counts) — a witnessed verdict is only as good as the counterexample beside it",
+ "witness-proposals.json":
+ "the failing tests the last witness run emitted and gated (id, obligationId, destination, summary) — staged, NOT in the user's tree until `predictable witness apply <id>`",
+ "witness-execution.json":
+ "what the RUNNER actually did on the last witness run, one entry per module driven (label, command, exitCode, succeeded, why, stdout, stderr, truncated) — shown so a reader can inspect a run, never parsed to decide anything; `succeeded` is about the INVOCATION and not about whether obligations held",
+ "theorems.json": "backing theorem per requirement (proof surface)",
+ "specs.json":
+ "every spec with its requirement/guideline rows and their persisted flags (verified/violated/agentVerified/implemented, origin, analysisKey, subject), each row's kind (stated-failure | requirement, classified once by Markillo.failsOf) and each class card's rendered text",
+ "req-analysis.json":
+ "per-requirement analysis join — displayed finding-first status ('issue' even when the mechanical flag says verified, EXCEPT a row enforced by a project callee, which is `safe` HERE because the check was found one call away; the spec page states that same row as a stated failure, so the two labels differ deliberately and `safe` here is what suppresses a duplicate defect row), subject FQN, scenario vc, unsafe entry points. Best-effort association: a finding whose condition cannot be rendered mints no requirement row (join via inferred-analysis.json's (fqn, vc)). Each row's `sites` lists every covered site the join resolved, each with that site's own status and FIN id; the row-level fields are its deciding site (the first of the worst status), so a (fqn, vc) join reads `sites`, never `scenarioVc` alone",
+ "locations.json":
+ "per-requirement and per-guideline code-location counts; an item with no locations is absent rather than zero",
+ "inferred-analysis.json":
+ "the Analysis-tab model — FIN-#### findings (fqn, condition, status, reachClass, vc, line, descriptor, enforcedBy) and entry points with their reached safe/issue finding ids. `status` is the FINDING's own: a row whose check lives in a project callee (`enforcedBy` set) stays 'issue' here — a caller can still reach the throw, which is what the entry-point view shows — while req-analysis.json shows the same obligation as a verified requirement with its enforcer named. Empty-shaped (never null) when no analysis ran",
+ "generatedAt": "2026-10-29T16:18:19+00:00[UTC]",
+ "formality.json":
+ "derived formality per requirement (formal / informal); `formal` includes rows recorded so BY PROVENANCE — machine-generated and backed by an analysis verdict — which the run's own log line splits out",
+ "findings.json":
+ "the ratified `sync --json` finding rows (file, line, severity, message, category, class, vc, priority, defectClass, fqn) — the same array the envelope carries, readable on its own. THE SAME rows as `analysis.json`'s `findings`, joined on (fqn, vc) — that pair and never `vc` alone, which repeats across sites and collapsed 36 rows to 26 for a hostile auditor who then read the survivor's file and line onto nine other rows and reported 10 mislabelled findings. Measured on the audited corpus: both arrays hold 36 rows, the (fqn, vc) key sets are identical, and every row agrees on file and line. What differs between the two files is the SUMMARY beside them, not this array. `class` is the reach class and is present ONLY where it was decided — none of the 36 on that corpus, since every one is `unclassified`; a row without it is undecided, not unreachable",
+ "diagnoses.json": "post-prove diagnosis records for refuted requirements",
+ "contracts.json":
+ "every function's CONTRACT as the analysis states it, one row per function with anything to say (fqn, rendered, file, line, requires, throws, ensures, callersPass): what it needs of its callers, when it throws and what, what it guarantees about its result, and, for a function only the project calls, what every caller passes it. Sentences in the source's own names; `rendered` is the call graph's name for the function",
+ "code-locations.json":
+ "{refs, decls}: the declarations each requirement/guideline is about (per (specId, itemId), keyed to a decl), and where each decl is in the user's own source (file + line range). Bodies are NOT included — read the source file",
+ "areas.json":
+ "{version, areas: [{name, description, parent}], page, pageState}: the project's TREE of areas, the named parts of the product a reader looks for, at most three levels deep, in the order of the Areas page (`_areas.md` in the specs directory) they are read from, which is pre-order: a parent before its children; `parent` is the name of the area it sits inside, null at the top; `areas: []` when there is no page. `page` is the Areas page's root-relative path, null unless it was read; `pageState` is `read`, `missing` (no page) or `unreadable` (a page that could not be read). Each spec's own areas are its `areas` in specs.json, the narrowest it serves, names from this list (unique) compared case-insensitively. Documentation written by `specs fill-descriptions` or a person, never analysis",
+ "analysis.json":
+ "a `summary` plus the viewer's presentation rows for the findings that REACH A PAGE (title, description, snippet, scenario, safeWhen, reachClass) — every count in `summary` whose name begins `findings` is over THAT population, so `findingsPotential` may be 0 where `findings.json` has `potential` rows; the rest of `summary` (`totalFunctions`, `clean`, `skipped`, `modulesTotal`, `sourceFilesTotal`) is over the WHOLE RUN and does not sum with them — `potentialIssues` here is the count that reaches a page, and the engine's own larger count is in `verification/.analysis-results.json`, where the per-function verdicts live too, outside this directory; {} when no analysis ran",
+ "agent-reviews.json":
+ "the audit trail behind every agent-verified requirement (specId, reqId, rationale, finding, reviewedAt, provenance) — the evidence for a verdict that is STRICTLY WEAKER than a verification"}

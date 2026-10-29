@@ -1,0 +1,11 @@
+[{"vc": "il1.bounds",
+  "severity": "warning",
+  "priority": 5,
+  "message":
+  "Nothing here establishes what `preceding` must be. `preceding` is what a call returned, and nothing states what that call returns.",
+  "line": 19,
+  "fqn": "Code.TreeSitter.SourceMap.SourceMap.traceError",
+  "file": "TreeSitter/SourceMap/Lookup.lean",
+  "defectClass": "bounds",
+  "class": "potential",
+  "category": "callee-precondition"}]

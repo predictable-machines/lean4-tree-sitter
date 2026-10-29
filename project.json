@@ -1,0 +1,17 @@
+{"sourceExtensions": ["lean"],
+ "sandbox": null,
+ "runtime": null,
+ "name": "lean4-tree-sitter",
+ "mode": "yolo",
+ "maxRegenerateIterations": null,
+ "maxReconcileIterations": 3,
+ "guidelines": [],
+ "excludePaths": ["test"],
+ "docPaths": ["docs", "."],
+ "docExtensions": ["md"],
+ "defaultSpecsDir": null,
+ "codePaths": ["."],
+ "aiProvider":
+ {"model": "claude-sonnet-5",
+  "fastModel": "claude-haiku-4-5",
+  "engine": "claudeCode"}}

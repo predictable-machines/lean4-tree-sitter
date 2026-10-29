@@ -1,0 +1,9 @@
+[{"throws": [],
+  "requires": [],
+  "rendered": "Code.TreeSitter.Extract.isIdentifierType",
+  "line": 22,
+  "fqn": "TreeSitter.Extract.isIdentifierType",
+  "file": "TreeSitter/Extract/Extract.lean",
+  "ensures":
+  ["the result is `nodeType == \"identifier\" || nodeType == \"simple_identifier\" || nodeType == \"field_identifier\" || nodeType == \"property_identifier\" || nodeType == \"constant\"`"],
+  "callersPass": []}]

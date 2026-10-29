@@ -1,0 +1,24 @@
+# Predictable Code's database. Everything listed here is one machine's own and never committed.
+/.cache/
+/.detached/
+/deps/
+/history/
+/fixes/
+/sessions/
+/claude-plugin/
+/opencode/
+/logs/
+**/.predictable-code/verification/
+**/.predictable-code/logs/
+**/.predictable-code/opencode/
+**/.predictable-code/deps/
+**/.predictable-code/history/
+**/.predictable-code/fixes/
+**/.predictable-code/sessions/
+**/.predictable-code/declarations/
+**/.predictable-code/claude-plugin/
+**/.predictable-code/specs/.compiled/
+**/.predictable-code/.sync.lock
+**/.predictable-code/toolchains.json
+**/.predictable-code/setup-progress.json
+**/.predictable-code/last-session

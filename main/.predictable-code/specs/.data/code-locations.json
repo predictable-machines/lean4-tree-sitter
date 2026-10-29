@@ -1,0 +1,17 @@
+{"refs":
+ [{"specId": "SPEC-001",
+   "refs":
+   [{"startLine": 22,
+     "key": "TreeSitter/SourceMap/Types.lean#22-26",
+     "file": "TreeSitter/SourceMap/Types.lean",
+     "endLine": 26,
+     "declName": "traceError",
+     "declKind": "method"}],
+   "itemId": "ANL-0001"}],
+ "decls":
+ [{"startLine": 22,
+   "key": "TreeSitter/SourceMap/Types.lean#22-26",
+   "fqn": "Code.TreeSitter.SourceMap.SourceMap",
+   "file": "TreeSitter/SourceMap/Types.lean",
+   "endLine": 26,
+   "declName": "SourceMap.SourceMap"}]}
